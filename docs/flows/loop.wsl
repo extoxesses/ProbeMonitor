@@ -1,0 +1,27 @@
+@startuml
+!theme cerulean
+!pragma teoz true
+
+  box Probe Monitor #lightgray
+    participant Mega2560 as mega
+    participant Esp8266  as esp
+  end box
+  participant Browser as bwr
+
+  group Loop main function
+    mega -> mega : Temperature monitor loop
+  end group
+
+  group 'serialEvent3' flow
+    bwr --> esp  : http://localhost:8080/:cmd
+    activate esp
+    mega <- esp  : Serial.print(cmd)
+    activate mega
+    mega -> mega : Process command
+    mega -> esp  : Serial3.print(response)
+    deactivate mega
+    bwr <-- esp  : response
+    deactivate esp
+  end group
+
+@enduml

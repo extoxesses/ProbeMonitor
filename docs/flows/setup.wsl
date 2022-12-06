@@ -1,0 +1,29 @@
+@startuml
+!theme cerulean
+!pragma teoz true
+
+  participant Mega2560 as mega
+  participant Esp8266  as esp
+
+  activate mega
+  activate esp
+
+  mega -> mega : Configure Serial
+  & esp  -> esp  : Configure Serial
+  
+  mega -> mega : Configure Serial3
+  & esp  -> esp  : Wait for Mega
+
+  mega -> mega : Init RTC module
+  mega -> mega : Init SD Card module
+  mega -> esp  : Enable Wifi (ssid, password)
+  mega -> mega : Wait for ESP
+  & esp  -> esp  : Init WiFi connection
+
+  esp  -> esp  : Init Server
+  mega <- esp  : Server ready
+
+  deactivate esp
+  deactivate mega
+
+@enduml
